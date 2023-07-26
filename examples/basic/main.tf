@@ -11,19 +11,19 @@ terraform {
   }
 }
 
-provider "azuread" {
-  tenant_id = ""
-}
+provider "azuread" {}
 
 data "azuread_devops_project" "example" {
   name = "Example Project"
 }
 
+data "azurerm_subscription" "current" {}
+
 module "service_connection" {
   source = "../.."
   azure_devops_project = data.azure_devops_project.example
-  display_name = "example"
-  subscription_id = ""
-  subscription_name = "example-subscription"
-  tenant_id = ""
+  display_name = data.azurerm_subscription.current.display_name
+  subscription_id = data.azurerm_subscription.current.id
+  subscription_name = data.azurerm_subscription.current.name
+  tenant_id = data.azurerm_subscription.current.tenant_id
 }
