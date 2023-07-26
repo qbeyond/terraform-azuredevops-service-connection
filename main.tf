@@ -21,7 +21,7 @@ resource "azuread_application_password" "this" {
 
 resource "azuredevops_serviceendpoint_azurerm" "this" {
   project_id                = var.azure_devops_project.id
-  service_endpoint_name     = "sc-azurerm-${var.display_name}-devops-01"
+  service_endpoint_name     = "sc-azurerm-${var.display_name}-${var.service_connection_suffix}"
   azurerm_spn_tenantid      = var.tenant_id
   azurerm_subscription_id   = var.subscription_id
   azurerm_subscription_name = var.subscription_name
