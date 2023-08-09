@@ -21,6 +21,11 @@ terraform {
 
 provider "azuread" {}
 
+provider "azuredevops" {
+  org_service_url = "<yourDevopsUrl>"
+  personal_access_token = "<yourPAT>"
+}
+
 data "azuread_devops_project" "example" {
   name = "Example Project"
 }
