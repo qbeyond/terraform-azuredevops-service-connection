@@ -16,17 +16,25 @@ terraform {
       source  = "hashicorp/azuread"
       version = "~> 2.39.0"
     }
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~> 3.63.0"
+    }
   }
 }
 
 provider "azuread" {}
+
+provider "azurerm" {
+  features {}
+}
 
 provider "azuredevops" {
   org_service_url = "<yourDevopsUrl>"
   personal_access_token = "<yourPAT>"
 }
 
-data "azuread_devops_project" "example" {
+data "azuredevops_project" "example" {
   name = "Example Project"
 }
 
@@ -34,10 +42,10 @@ data "azurerm_subscription" "current" {}
 
 module "service_connection" {
   source = "../.."
-  azure_devops_project = data.azure_devops_project.example
+  azure_devops_project = data.azuredevops_project.example
   display_name = data.azurerm_subscription.current.display_name
-  subscription_id = data.azurerm_subscription.current.id
-  subscription_name = data.azurerm_subscription.current.name
+  subscription_id = data.azurerm_subscription.current.subscription_id
+  subscription_name = data.azurerm_subscription.current.display_name
   tenant_id = data.azurerm_subscription.current.tenant_id
 }
 ```
@@ -48,6 +56,7 @@ module "service_connection" {
 |------|---------|
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.39.0 |
 | <a name="requirement_azuredevops"></a> [azuredevops](#requirement\_azuredevops) | ~> 0.4.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 3.63.0 |
 
 ## Inputs
 
@@ -60,7 +69,7 @@ module "service_connection" {
 | <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | Tenant of the service principal. | `string` | n/a | yes |
 | <a name="input_application"></a> [application](#input\_application) | Optional azuread\_application if one already exists. | <pre>object({<br>    object_id = string<br>    application_id = string<br>  })</pre> | `null` | no |
 | <a name="input_application_permission"></a> [application\_permission](#input\_application\_permission) | The permission the serviceprincipal gets on the target subscription. Defaults to Contributor. | `string` | `"Contributor"` | no |
-| <a name="input_service_connection-suffix"></a> [service\_connection-suffix](#input\_service\_connection-suffix) | Suffix of the service connection name. Defaults to devops-01 | `string` | `"devops-01"` | no |
+| <a name="input_service_connection_suffix"></a> [service\_connection\_suffix](#input\_service\_connection\_suffix) | Suffix of the service connection name. Defaults to devops-01 | `string` | `"devops-01"` | no |
 ## Outputs
 
 | Name | Description |
