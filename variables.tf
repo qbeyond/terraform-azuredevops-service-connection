@@ -11,7 +11,7 @@ variable "display_name" {
   description = "Display name of Service principal (prefix: `sp-`) and service connection (prefix: `sc-azurerm-`)."
 }
 
-variable "service_connection-suffix" {
+variable "service_connection_suffix" {
   type = string
   description = "Suffix of the service connection name. Defaults to devops-01"
   default = "devops-01"
