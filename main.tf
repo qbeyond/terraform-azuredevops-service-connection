@@ -33,7 +33,7 @@ resource "azuredevops_serviceendpoint_azurerm" "this" {
 
 resource "azurerm_role_assignment" "this" {
   count                = var.application_permission != null ? 1 : 0
-  principal_id         = coalesce(try(var.application.object_id, null), azuread_service_principal.this[0].object_id)
+  principal_id         = coalesce(try(var.application.object_id, null), one(azuread_service_principal.this).object_id)
   role_definition_name = var.application_permission
   scope                = "/subscriptions/${var.subscription_id}"
 }
