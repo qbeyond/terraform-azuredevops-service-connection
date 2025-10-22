@@ -13,4 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - [Issue with provider registration of Microsoft.TimeSeriesInsights in AzureRm Version >3.90.0 ](https://github.com/hashicorp/terraform-provider-azurerm/issues/27466)
 
+## [2.0.0] - 2025-10.22
 
+### Changed
+
+- Replaced authentication via **Secrets** with **Workload Identity Federation (WIF)**.
+- Updated provider versions to current newest
+
+### Added
+
+- Added `Storage Blob Data Contributor` as a default role assignment
