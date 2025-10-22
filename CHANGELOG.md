@@ -17,7 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.0.0] - 2025-10.22
 
-### Breaking Change
+### Changed
 
 - Replaced authentication via **Secrets** with **Workload Identity Federation (WIF)**.
 - Updated provider versions to current newest
+
+### Added
+
+- Added `Storage Blob Data Contributor` as a default role assignment
