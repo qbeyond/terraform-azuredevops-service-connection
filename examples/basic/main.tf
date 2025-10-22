@@ -2,15 +2,15 @@ terraform {
   required_providers {
     azuredevops = {
       source  = "microsoft/azuredevops"
-      version = "~> 0.4.0"
+      version = "~> 1.11.2"
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "~> 2.39.0"
+      version = "~> 3.4.0"
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.63.0"
+      version = "~> 4.40.0"
     }
   }
 }
@@ -22,7 +22,7 @@ provider "azurerm" {
 }
 
 provider "azuredevops" {
-  org_service_url = "<yourDevopsUrl>"
+  org_service_url       = "<yourDevopsUrl>"
   personal_access_token = "<yourPAT>"
 }
 
@@ -33,10 +33,10 @@ data "azuredevops_project" "example" {
 data "azurerm_subscription" "current" {}
 
 module "service_connection" {
-  source = "../.."
+  source               = "../.."
   azure_devops_project = data.azuredevops_project.example
-  display_name = data.azurerm_subscription.current.display_name
-  subscription_id = data.azurerm_subscription.current.subscription_id
-  subscription_name = data.azurerm_subscription.current.display_name
-  tenant_id = data.azurerm_subscription.current.tenant_id
+  display_name         = data.azurerm_subscription.current.display_name
+  subscription_id      = data.azurerm_subscription.current.subscription_id
+  subscription_name    = data.azurerm_subscription.current.display_name
+  tenant_id            = data.azurerm_subscription.current.tenant_id
 }

@@ -22,13 +22,14 @@ resource "azuredevops_serviceendpoint_azurerm" "this" {
   azurerm_subscription_id                = var.subscription_id
   azurerm_subscription_name              = var.subscription_name
   credentials {
-    serviceprincipalid = local.application.application_id
+    serviceprincipalid = local.application.client_id
   }
 }
 
 resource "azuread_application_federated_identity_credential" "this" {
-  application_id = azuread_application.this.id
-  display_name   = "wif-${azuredevops_serviceendpoint_azurerm.this.name}"
+  description    = ""
+  application_id = azuread_application.this[0].id
+  display_name   = "wif-${azuredevops_serviceendpoint_azurerm.this.service_endpoint_name}"
   audiences      = ["api://AzureADTokenExchange"]
   issuer         = azuredevops_serviceendpoint_azurerm.this.workload_identity_federation_issuer
   subject        = azuredevops_serviceendpoint_azurerm.this.workload_identity_federation_subject
