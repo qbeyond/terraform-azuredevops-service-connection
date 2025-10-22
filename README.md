@@ -10,15 +10,15 @@ terraform {
   required_providers {
     azuredevops = {
       source  = "microsoft/azuredevops"
-      version = "~> 0.4.0"
+      version = "~> 1.11.2"
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "~> 2.39.0"
+      version = "~> 3.4.0"
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "~> 3.63.0"
+      version = "~> 4.40.0"
     }
   }
 }
@@ -30,7 +30,7 @@ provider "azurerm" {
 }
 
 provider "azuredevops" {
-  org_service_url = "<yourDevopsUrl>"
+  org_service_url       = "<yourDevopsUrl>"
   personal_access_token = "<yourPAT>"
 }
 
@@ -41,12 +41,12 @@ data "azuredevops_project" "example" {
 data "azurerm_subscription" "current" {}
 
 module "service_connection" {
-  source = "../.."
+  source               = "../.."
   azure_devops_project = data.azuredevops_project.example
-  display_name = data.azurerm_subscription.current.display_name
-  subscription_id = data.azurerm_subscription.current.subscription_id
-  subscription_name = data.azurerm_subscription.current.display_name
-  tenant_id = data.azurerm_subscription.current.tenant_id
+  display_name         = data.azurerm_subscription.current.display_name
+  subscription_id      = data.azurerm_subscription.current.subscription_id
+  subscription_name    = data.azurerm_subscription.current.display_name
+  tenant_id            = data.azurerm_subscription.current.tenant_id
 }
 ```
 
@@ -54,9 +54,9 @@ module "service_connection" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 2.39.0 |
-| <a name="requirement_azuredevops"></a> [azuredevops](#requirement\_azuredevops) | ~> 0.4.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 3.90.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | ~> 3.4.0 |
+| <a name="requirement_azuredevops"></a> [azuredevops](#requirement\_azuredevops) | ~> 1.11.2 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 4.40.0 |
 
 ## Inputs
 
@@ -67,8 +67,8 @@ module "service_connection" {
 | <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | ID of subscription to create service connection to. | `string` | n/a | yes |
 | <a name="input_subscription_name"></a> [subscription\_name](#input\_subscription\_name) | Name of subscription to create service connection to. | `string` | n/a | yes |
 | <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | Tenant of the service principal. | `string` | n/a | yes |
-| <a name="input_application"></a> [application](#input\_application) | Optional azuread\_application if one already exists. | <pre>object({<br/>    object_id = string<br/>    application_id = string<br/>  })</pre> | `null` | no |
-| <a name="input_application_permission"></a> [application\_permission](#input\_application\_permission) | The permission the serviceprincipal gets on the target subscription. Defaults to Contributor. | `string` | `"Contributor"` | no |
+| <a name="input_application"></a> [application](#input\_application) | Optional azuread\_application if one already exists. | <pre>object({<br/>    app_registration_object_id       = string<br/>    enterprise_application_object_id = string<br/>    client_id                        = string # Application ID<br/>  })</pre> | `null` | no |
+| <a name="input_role_assignments"></a> [role\_assignments](#input\_role\_assignments) | List of objects of role names to scopes for role assignments. If scope is left empty, default scope is the var.subscription\_id | <pre>list(object({<br/>    role  = string<br/>    scope = string<br/>  }))</pre> | <pre>[<br/>  {<br/>    "role": "Contributor",<br/>    "scope": ""<br/>  },<br/>  {<br/>    "role": "Storage Blob Data Contributor",<br/>    "scope": ""<br/>  }<br/>]</pre> | no |
 | <a name="input_service_connection_suffix"></a> [service\_connection\_suffix](#input\_service\_connection\_suffix) | Suffix of the service connection name. Defaults to devops-01 | `string` | `"devops-01"` | no |
 ## Outputs
 
@@ -83,6 +83,7 @@ module "service_connection" {
       | Type | Used |
       |------|-------|
         | [azuread_application](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application) | 1 |
+        | [azuread_application_federated_identity_credential](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_federated_identity_credential) | 1 |
         | [azuread_service_principal](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) | 1 |
         | [azuredevops_serviceendpoint_azurerm](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/serviceendpoint_azurerm) | 1 |
         | [azurerm_role_assignment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | 1 |
@@ -100,6 +101,7 @@ No modules.
             | Name | Type |
             |------|------|
                   | [azuread_application.this](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application) | resource |
+                  | [azuread_application_federated_identity_credential.this](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_federated_identity_credential) | resource |
                   | [azuread_service_principal.this](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) | resource |
                   | [azuredevops_serviceendpoint_azurerm.this](https://registry.terraform.io/providers/microsoft/azuredevops/latest/docs/resources/serviceendpoint_azurerm) | resource |
                   | [azurerm_role_assignment.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
