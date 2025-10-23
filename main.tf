@@ -1,10 +1,13 @@
-
 data "azuread_client_config" "current" {}
 
 resource "azuread_application" "this" {
   count        = var.application == null ? 1 : 0
   display_name = "sp-${var.display_name}"
   owners       = [data.azuread_client_config.current.object_id]
+}
+
+data "azuread_application" "existing" {
+  client_id = local.application.client_id
 }
 
 resource "azuread_service_principal" "this" {
@@ -27,8 +30,7 @@ resource "azuredevops_serviceendpoint_azurerm" "this" {
 }
 
 resource "azuread_application_federated_identity_credential" "this" {
-  description    = ""
-  application_id = azuread_application.this[0].id
+  application_id = var.application == null ? azuread_application.this[0].id : data.azuread_application.existing.id
   display_name   = "wif-${azuredevops_serviceendpoint_azurerm.this.service_endpoint_name}"
   audiences      = ["api://AzureADTokenExchange"]
   issuer         = azuredevops_serviceendpoint_azurerm.this.workload_identity_federation_issuer
