@@ -9,6 +9,10 @@ output "service_endpoint" {
 }
 
 output "application" {
-  value = length(azuread_application.this) == 1 ? azuread_application.this[0] : null
+  value = length(azuread_application.this) == 1 ? {
+    app_registration_object_id       = azuread_application.this[0].object_id
+    enterprise_application_object_id = azuread_service_principal.this[0].object_id
+    client_id                        = azuread_application.this[0].client_id
+  } : null
   description = "Created azuread_application by this module for reuse in other service connections or null if already exists."
 }
