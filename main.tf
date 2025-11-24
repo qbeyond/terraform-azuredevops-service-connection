@@ -30,6 +30,7 @@ resource "azuredevops_serviceendpoint_azurerm" "this" {
 }
 
 resource "azuread_application_federated_identity_credential" "this" {
+  count          = var.application == null ? 1 : 0
   application_id = var.application == null ? azuread_application.this[0].id : data.azuread_application.existing.id
   display_name   = "wif-${azuredevops_serviceendpoint_azurerm.this.service_endpoint_name}"
   audiences      = ["api://AzureADTokenExchange"]
